@@ -2,8 +2,6 @@
 
 class t_REST_API extends PHPUnit_Framework_TestCase {
 
-    public $__directory = "/home/remi/share/02_TEST/tests";
-
     // ...
 
     public function testCollectionsDescribe() {
@@ -14,7 +12,7 @@ class t_REST_API extends PHPUnit_Framework_TestCase {
         // Create a stub for RestoContext class
         //$context = $this->getMockBuilder('RestoContext')->getMock();
 
-        $config = include($this->__directory . "/conf/config.php");
+        $config = include(dirname(__FILE__) . "/../conf/config.php");
         $context = new RestoContext($config);
 
         $profile = array(
@@ -40,7 +38,7 @@ class t_REST_API extends PHPUnit_Framework_TestCase {
 
     public function testGetCollections() {
 
-        $config = include($this->__directory . "/conf/config.php");
+        $config = include(dirname(__FILE__) . "/../conf/config.php");
         $context = new RestoContext($config);
 
         $profile = array(
@@ -79,7 +77,7 @@ class t_REST_API extends PHPUnit_Framework_TestCase {
 
     public function testGetUser() {
 
-        $config = include($this->__directory . "/conf/config.php");
+        $config = include(dirname(__FILE__) . "/../conf/config.php");
         $context = new RestoContext($config);
 
         $profile = array(
@@ -118,7 +116,7 @@ class t_REST_API extends PHPUnit_Framework_TestCase {
 
     public function testGetUserGroups() {
 
-        $config = include($this->__directory . "/conf/config.php");
+        $config = include(dirname(__FILE__) . "/../conf/config.php");
         $context = new RestoContext($config);
 
         $profile = array(
@@ -157,7 +155,7 @@ class t_REST_API extends PHPUnit_Framework_TestCase {
 
     public function testGetUserRights() {
 
-        $config = include($this->__directory . "/conf/config.php");
+        $config = include(dirname(__FILE__) . "/../conf/config.php");
         $context = new RestoContext($config);
 
         $profile = array(
@@ -196,7 +194,7 @@ class t_REST_API extends PHPUnit_Framework_TestCase {
 
     public function testGetUserRightsOnCollection() {
 
-        $config = include($this->__directory . "/conf/config.php");
+        $config = include(dirname(__FILE__) . "/../conf/config.php");
         $context = new RestoContext($config);
 
         $profile = array(
@@ -235,7 +233,7 @@ class t_REST_API extends PHPUnit_Framework_TestCase {
 
     public function testGetUserSignatures() {
 
-        $config = include($this->__directory . "/conf/config.php");
+        $config = include(dirname(__FILE__) . "/../conf/config.php");
         $context = new RestoContext($config);
 
         $profile = array(
@@ -274,7 +272,7 @@ class t_REST_API extends PHPUnit_Framework_TestCase {
 
     public function testCollectionSearch() {
 
-        $config = include($this->__directory . "/conf/config.php");
+        $config = include(dirname(__FILE__) . "/../conf/config.php");
         $context = new RestoContext($config);
 
         $profile = array(

@@ -5,7 +5,8 @@
  */
 function autoload($className) {
     
-    $path_to_resto = "/home/remi/share/resto_test/";
+    global $argv;
+    $path_to_resto = $argv[4];
     
     foreach (array(
         $path_to_resto . 'include/resto/',
@@ -32,4 +33,4 @@ spl_autoload_register('autoload');
  * Load manualy mocked classes
  */
 //Resto
-include '/home/remi/share/02_TEST/tests/mock/Resto.php';
+include dirname(__FILE__) . '/../mock/Resto.php';

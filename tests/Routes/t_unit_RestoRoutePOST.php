@@ -2,13 +2,11 @@
 
 class t_unit_RestoRoutePOST extends PHPUnit_Framework_TestCase {
 
-    public $__directory = "/home/remi/share/02_TEST/tests";
-
     // ...
 
     public function testAdminUser() {
 
-        $config = include($this->__directory . "/conf/config.php");
+        $config = include(dirname(__FILE__) . "/../conf/config.php");
         $context = new RestoContext($config);
 
         $profile = array(

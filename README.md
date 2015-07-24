@@ -3,19 +3,15 @@
 ## Prerequesites
 
 * resto
-* resto test database
 * phpunit (https://phpunit.de/getting-started.html)
 
 ## Init Context
 
-    ./scripts/initContext -p <PATH>
+First you have to initialized the context. Launch the script to create collections, add features, add users... to resto.
 
-## Run tests
+    ./scripts/initContext -p <path to resto-test>
 
-Launch test script 
-        ./resto_unitTests.sh
-
-## Run test manually 
+## Run test 
     
-    phpunit --bootstrap src/autoload.php tests/myTest.php
+    phpunit --bootstrap conf/autoload.php tests/myTest.php <path to resto>
 
