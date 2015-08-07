@@ -9,10 +9,8 @@ You can find here tests files for resto (https://github.com/jjrom/resto).
 
 ## Configuration
 
-Please set the path to resto in conf/configuration.xml
+Please set path to resto in conf/configuration.xml
    
-    env name="resto" value="ABSOLUTE_PATH_TO_RESTO"
-    
 ## Resto configuration
 
 ### Create test database
