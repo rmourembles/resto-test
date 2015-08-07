@@ -7,10 +7,6 @@ You can find here tests files for resto (https://github.com/jjrom/resto).
 * resto (https://github.com/jjrom/resto)
 * phpunit (https://phpunit.de/getting-started.html)    
 
-## Configuration
-
-Please set path to resto in conf/configuration.xml
-   
 ## Resto configuration
 
 ### Create test database
@@ -21,14 +17,12 @@ In order to create a test database, you have to use resto installation script :
 
 ### Create an admin user
 
-Whith email = admin and groups = admin
+    ABSOLUTE_PATH_TO_FULL_RESTO/_install/createAdminUser.sh -d restotest -u admin -p admin
 
-    SHA1PASSWORD=`php -r "echo sha1('admin');"`
-    ACTIVATIONCODE=`php -r "echo sha1(mt_rand() . microtime());"`
-    psql -d restotest -U postgres << EOF
-    INSERT INTO usermanagement.users (email,groups,username,password,activationcode,activated,registrationdate) VALUES ('admin','admin','admin','$SHA1PASSWORD','$ACTIVATIONCODE', 1, now());
-    EOF
+## Configuration
 
+Please set path to resto in conf/configuration.xml
+   
 ## Run test 
     
     cd resto-test
