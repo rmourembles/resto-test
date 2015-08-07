@@ -23,8 +23,7 @@ In order to create a test database, you have to use resto installation script :
 
 ### Create an admin user
 
-* email = admin
-* groups = admin
+Whith email = admin and groups = admin
 
     SHA1PASSWORD=`php -r "echo sha1('admin');"`
     ACTIVATIONCODE=`php -r "echo sha1(mt_rand() . microtime());"`
@@ -39,7 +38,7 @@ In order to create a test database, you have to use resto installation script :
 
 ## Analysis
 
-Open the index.html generated file in the folder where you have decided to store reports.
+Open the index.html generated file (located in the folder where you have decided to store reports).
 
 # Use cases
 
