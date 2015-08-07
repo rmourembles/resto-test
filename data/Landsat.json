@@ -2,6 +2,11 @@
     "name": "Landsat",
     "model": "RestoModel_muscate",
     "status": "public",
+    "licenseId": "Example",
+    "rights":{
+        "download":1,
+        "visualize":1
+    },
     "osDescription": {
         "fr": {
             "ShortName": "Landsat",
