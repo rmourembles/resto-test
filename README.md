@@ -10,17 +10,16 @@ You can find here tests files for resto (https://github.com/jjrom/resto).
 ## Configuration
 
 Please set the path to resto in conf/configuration.xml
-    <php>
-        <env name="resto" value="<ABSOLUTE PATH TO RESTO>"/>
-    </php>
-
+   
+    env name="resto" value="ABSOLUTE_PATH_TO_RESTO"
+    
 ## Resto configuration
 
 ### Create test database
 
 In order to create a test database, you have to use resto installation script :
 
-    <ABSOLUTE PATH TO FULL RESTO>/_install/installDB.sh -F -p resto -d restotest
+    ABSOLUTE_PATH_TO_FULL_RESTO/_install/installDB.sh -F -p resto -d restotest
 
 ### Create an admin user
 
@@ -35,8 +34,8 @@ In order to create a test database, you have to use resto installation script :
 
 ## Run test 
     
-    cd <resto-test folder>
-    phpunit -c conf/configuration.xml --bootstrap conf/autoload.php --coverage-html <absolute path to the folder where you want to store reports> tests/t_unit.php
+    cd resto-test
+    phpunit -c conf/configuration.xml --bootstrap conf/autoload.php --coverage-html /absolute/path/to/the/folder/where/you/want/to/store/reports tests/t_unit.php
 
 ## Analysis
 
