@@ -173,7 +173,7 @@ return array(
         /*
          * Database name
          */
-        'dbname' => 'resto',
+        'dbname' => 'restotest',
         
         /*
          * Database host - if not specified connect through unix domain socket (IPC socket) instead of TCP/IP socket

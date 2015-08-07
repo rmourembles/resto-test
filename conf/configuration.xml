@@ -1,0 +1,17 @@
+<phpunit>
+    <php>
+        <env name="resto" value="/home/remi/share/resto/"/>
+    </php>
+    <filter>
+        <whitelist>
+            <!-- lib subfolders to include -->
+            <directory>/home/remi/share/resto/include/resto</directory>
+
+            <exclude>
+                <directory>/home/remi/share/02_TEST</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>
+
+    
