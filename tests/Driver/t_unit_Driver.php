@@ -13,7 +13,7 @@ class t_unit_Driver extends PHPUnit_Framework_TestCase {
      */
     public function test_functions_cart() {
 
-        $config = include(dirname(__FILE__) . "/../conf/config.php");
+        $config = include(dirname(__FILE__) . "/../../conf/config.php");
         $context = new RestoContext($config);
         $functions_cart = new Functions_cart($context->dbDriver);
 
@@ -48,7 +48,7 @@ class t_unit_Driver extends PHPUnit_Framework_TestCase {
      * @covers Functions_rights::removeRights
      */
     public function test_functions_rights(){
-        $config = include(dirname(__FILE__) . "/../conf/config.php");
+        $config = include(dirname(__FILE__) . "/../../conf/config.php");
         $context = new RestoContext($config);
         $functions_rights = new Functions_rights($context->dbDriver);
         
@@ -100,7 +100,7 @@ class t_unit_Driver extends PHPUnit_Framework_TestCase {
      * @covers Functions_collections::storeCollection
      */
     public function test_functions_collections() {
-        $config = include(dirname(__FILE__) . "/../conf/config.php");
+        $config = include(dirname(__FILE__) . "/../../conf/config.php");
         $context = new RestoContext($config);
         $profile = array(
             'userid' => '1',
@@ -166,7 +166,7 @@ class t_unit_Driver extends PHPUnit_Framework_TestCase {
      * 
      */
     public function test_functions_licenses(){
-        $config = include(dirname(__FILE__) . "/../conf/config.php");
+        $config = include(dirname(__FILE__) . "/../../conf/config.php");
         $context = new RestoContext($config);
         $profile = array(
             'userid' => '1',

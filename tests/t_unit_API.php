@@ -1,6 +1,6 @@
 <?php
 
-class t_REST_API extends PHPUnit_Framework_TestCase {
+class t_unit_API extends PHPUnit_Framework_TestCase {
 
     // ...
 
