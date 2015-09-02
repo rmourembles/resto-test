@@ -1,5 +1,5 @@
 <?php
-
+ 
 /**
  * Test class for collection actions :
  *  - create collection
