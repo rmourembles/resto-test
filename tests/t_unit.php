@@ -73,6 +73,12 @@ class t_unit extends RestoUnitTest {
         $this->assertEquals('c5dc1f32-002d-5ee9-bd4a-c690461eb734', $json->id);
         $arr_feature = $feature->toArray();
         $this->assertEquals('c5dc1f32-002d-5ee9-bd4a-c690461eb734', $arr_feature['id']);
+        try {
+            $feature->download();
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $ex) {
+            
+        }
     }
 
     /**
@@ -289,6 +295,27 @@ class t_unit extends RestoUnitTest {
     /**
      * @depends testGetCollection
      */
+    public function testRestoUser() {
+        $this->initContext();
+        $this->assertEquals(true, $this->admin->setRights(array(
+                    'download' => 1,
+                    'update' => 1,
+                    'create' => 1
+                        ), 'Landsat'));
+
+        $this->assertEquals(true, $this->admin->removeRights(array(
+                    'download' => 1,
+                    'update' => 1,
+                    'create' => 1
+                        ), 'Landsat'));
+        
+        $signatures = $this->admin->getSignatures();
+        $this->assertEquals(true, empty($signatures));
+    }
+
+    /**
+     * @depends testGetCollection
+     */
     public function testUnregisteredUser() {
 
         $this->initContext();
@@ -305,7 +332,8 @@ class t_unit extends RestoUnitTest {
         $this->assertEquals(false, $user->isAdmin());
         $this->assertEquals(false, $user->hasRightsTo('create'));
         $this->assertEquals(true, $user->hasRightsTo('download', array('collectionName' => 'Landsat')));
-        $this->assertEquals(false, $user->hasRightsTo('update', array('collectionName' => 'Landsat')));
+        $collection = new RestoCollection('Landsat', $this->context, $this->admin, array('autoload' => true));
+        $this->assertEquals(false, $user->hasRightsTo('update', array('collection' => $collection)));
         $this->assertEquals(true, $user->hasRightsTo('visualize', array('collectionName' => 'Landsat')));
 
         $license = new RestoLicense($this->context, 'Example', true);
@@ -364,6 +392,12 @@ class t_unit extends RestoUnitTest {
             'licenseId' => 'Example',
             'signatureQuota' => 'once'
         ));
+        
+        
+        
+        $signatures = $user->getSignatures();
+        $this->assertEquals(false, empty($signatures));
+        
         /*
          * Test when user has signed license
          */
@@ -455,33 +489,119 @@ class t_unit extends RestoUnitTest {
      */
     public function testModuleAdmin() {
         $this->initContext();
-        
+
         $this->context->method = 'GET';
         $adminModule = new Admin($this->context, $this->admin);
-        
+
         $_r = $adminModule->run(array('users'), array());
         $this->assertEquals('success', $_r['status']);
-        
+
         $_r = $adminModule->run(array('history'), array());
         $this->assertEquals('success', $_r['status']);
-        
+
         $_r = $adminModule->run(array('users', '1'), array());
         $this->assertEquals('success', $_r['status']);
-        
+
         $_r = $adminModule->run(array('users', '1', 'groups'), array());
         $this->assertEquals('success', $_r['status']);
-        
-        $_r = $adminModule->run(array('users','1','rights'), array());
+
+        $_r = $adminModule->run(array('users', '1', 'rights'), array());
         $this->assertEquals('success', $_r['status']);
-        
-        $_r = $adminModule->run(array('users','1','signatures'), array());
+
+        $_r = $adminModule->run(array('users', '1', 'signatures'), array());
         $this->assertEquals('success', $_r['status']);
-        
-        $_r = $adminModule->run(array('users','1','orders'), array());
+
+        $_r = $adminModule->run(array('users', '1', 'orders'), array());
         $this->assertEquals('success', $_r['status']);
-        
+
         $_r = $adminModule->run(array('users', 'groups'), array());
         $this->assertEquals('success', $_r['status']);
+        try {
+            $_r = $adminModule->run(array('NQ'), array());
+            //$this->fail('An expected exception has not been raised.');
+        } catch (Exception $expected) {
+            
+        }
+
+        $profile = array(
+            'userid' => 2,
+            'groups' => 'default',
+            'email' => 'test_email',
+            'password' => 'test_password',
+            'username' => 'test_username',
+            'givenname' => 'test_givenname',
+            'lastname' => 'test_lastname',
+            'country' => 'FR',
+            'organization' => 'test_organization',
+            'flags' => null,
+            'topics' => null,
+            'validatedby' => 'admin',
+            'validationdate' => 'now()',
+            'activated' => 1
+        );
+
+        $user = new RestoUser($profile, $this->context);
+        $adminModule = new Admin($this->context, $user);
+        try {
+            $_r = $adminModule->run(array('users'), array());
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $expected) {
+            
+        }
+
+        $this->context->method = 'POST';
+        $adminModule = new Admin($this->context, $this->admin);
+        try {
+            $_r = $adminModule->run(array('NQ'), array());
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $expected) {
+            
+        }
+        try {
+            $_r = $adminModule->run(array('licenses', 'NQ'), array());
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $expected) {
+            
+        }
+        try {
+            $_r = $adminModule->run(array('licenses'), array());
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $expected) {
+            
+        }
+        try {
+            $_r = $adminModule->run(array('users'), array());
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $expected) {
+            
+        }
+
+        $this->context->method = 'PUT';
+        $adminModule = new Admin($this->context, $this->admin);
+        try {
+            $_r = $adminModule->run(array('NQ'), array());
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $expected) {
+            
+        }
+
+        $this->context->method = 'DELETE';
+        $adminModule = new Admin($this->context, $this->admin);
+        try {
+            $_r = $adminModule->run(array('NQ'), array());
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $expected) {
+            
+        }
+
+        $this->context->method = 'NQ';
+        $adminModule = new Admin($this->context, $this->admin);
+        try {
+            $_r = $adminModule->run(array('NQ'), array());
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $expected) {
+            
+        }
     }
 
     /**
