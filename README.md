@@ -34,6 +34,7 @@ Please set path to resto in conf/configuration.xml
     Time: 56.73 seconds, Memory: 153.50Mb
     OK (33 tests, 126 assertions)
 
+Add --coverage-html /where/you/want/to/store/reports to get coverage reports.
 
 ## Analysis
 
