@@ -40,6 +40,143 @@ class t_unit extends RestoUnitTest {
         $collection = new RestoCollection($data['name'], $this->context, $this->admin);
         $collection->loadFromJSON($data, true);
     }
+    
+    /**
+     * @depends testCreateCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 404
+     * 
+     * Test error when trying to load from store a collection wich does not exist
+     * 
+     */
+    public function testExceptionLoadCollection() {
+        $this->initContext();
+        $collection = new RestoCollection('Toto', $this->context, $this->admin, array('autoload' => true));
+        $collection->loadFromJSON($data, false);
+    }
+    
+    /**
+     * @depends testCreateCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 500
+     * @expectedExceptionMessage Context must be defined
+     * 
+     * Test error when trying to create a collection without context
+     * 
+     */
+    public function testExceptionCreateCollectionNoContext() {
+        $this->initContext();
+        
+        $collection = new RestoCollection('TATA', null, $this->admin);
+    }
+    
+    /**
+     * @depends testCreateCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 500
+     * @expectedExceptionMessage Collection name must be an alphanumeric string not starting with a digit
+     * 
+     * Test error when trying to create a collection without name
+     * 
+     */
+    public function testExceptionCreateCollectionNoName() {
+        $this->initContext();
+        
+        $collection = new RestoCollection(null, $this->context, $this->admin);
+    }
+    
+    /**
+     * @depends testCreateCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 500
+     * @expectedExceptionMessage Property "model" and collection name differ
+     * 
+     * Test error when trying to load a collection with a wrong model
+     * 
+     */
+    public function testExceptionCreateCollection() {
+        $this->initContext();
+        
+        $data = file_get_contents(dirname(__FILE__) . "/../data/Example.json");
+        $data = json_decode($data, true);
+        $collection = new RestoCollection($data['name'], $this->context, $this->admin);
+        $collection->loadFromJSON($data, false);
+        
+        $data = file_get_contents(dirname(__FILE__) . "/../data/Example_error_wrong_model_name.json");
+        $data = json_decode($data, true);
+        $collection->loadFromJSON($data, false);
+    }
+    
+    /**
+     * @depends testCreateCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 500
+     * @expectedExceptionMessage Property "name" and collection name differ
+     * 
+     * Test collection creatation with a bad json file
+     *  -> missing name attribute
+     */
+    public function testExceptionCreateCollection_1() {
+        
+        $this->initContext();
+        $data = file_get_contents(dirname(__FILE__) . "/../data/Example_error_without_name.json");
+        $data = json_decode($data, true);
+        $collection = new RestoCollection('Example', $this->context, $this->admin);
+        $collection->loadFromJSON($data, true);
+    }
+    
+    /**
+     * @depends testCreateCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 500
+     * @expectedExceptionMessage Property "model" is mandatory
+     * 
+     * Test collection creatation with a bad json file
+     *  -> missing model attribute
+     */
+    public function testExceptionCreateCollection_2() {
+        
+        $this->initContext();
+        $data = file_get_contents(dirname(__FILE__) . "/../data/Example_error_without_model.json");
+        $data = json_decode($data, true);
+        $collection = new RestoCollection('Example', $this->context, $this->admin);
+        $collection->loadFromJSON($data, true);
+    }
+    
+    /**
+     * @depends testCreateCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 500
+     * @expectedExceptionMessage English OpenSearch description is mandatory
+     * 
+     * Test collection creatation with a bad json file
+     *  -> missing osdescription
+     */
+    public function testExceptionCreateCollection_3() {
+        
+        $this->initContext();
+        $data = file_get_contents(dirname(__FILE__) . "/../data/Example_error_without_osdescription.json");
+        $data = json_decode($data, true);
+        $collection = new RestoCollection('Example', $this->context, $this->admin);
+        $collection->loadFromJSON($data, true);
+    }
+    
+    /**
+     * @depends testCreateCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 500
+     * @expectedExceptionMessage Invalid input JSON
+     * 
+     * Test collection creatation with a bad json file
+     *  -> missing osdescription
+     */
+    public function testExceptionCreateCollection_4() {
+        
+        $this->initContext();
+        $data= 'totto';
+        $collection = new RestoCollection('Example', $this->context, $this->admin);
+        $collection->loadFromJSON($data, true);
+    }
 
     /**
      * @depends testCreateCollection
@@ -90,6 +227,12 @@ class t_unit extends RestoUnitTest {
         $collection = new RestoCollection('Example', $this->context, $this->admin, array('autoload' => true));
         $this->assertEquals('Example', $collection->name);
         $this->assertEquals('http:///resto/collections/Example', $collection->getUrl());
+        $json = json_decode($collection->toJSON(false));
+        $this->assertEquals('Example', $json->name);
+        /*
+         * TODO :  no check for toXML function
+         */
+        $xml = $collection->toXML();
     }
 
     /**
@@ -106,6 +249,51 @@ class t_unit extends RestoUnitTest {
 
         $json = json_decode($collections->toJSON(false));
         $this->assertEquals('*', $json->synthesis->name);
+        /*
+         * TODO :   check for toXML function
+         */
+        $xml = $collections->toXML();
+         /*
+         * TODO :  chek feature collection
+         */
+        $featureCollection = $collections->search();
+        
+        $data = file_get_contents(dirname(__FILE__) . "/../data/Land.json");
+        $data = json_decode($data, true);
+        $this->assertEquals(true, $collections->create($data));
+        $collections->remove('Land');
+    }
+    
+    /*
+     * @depends testGetCollections
+     */
+    public function testFeatureCollection(){
+        $this->initContext();
+        $featureCollection = new RestoFeatureCollection($this->context, $this->admin, null);
+        $collection = new RestoCollection('Example', $this->context, $this->admin, array('autoload' => true));
+        $featureCollection = new RestoFeatureCollection($this->context, $this->admin, array($collection));
+        $json = json_decode($featureCollection->toJSON(false));
+        $this->assertEquals('FeatureCollection', $json->type);
+        /*
+         * TODO : check ATOM validity
+         * Cannot be tested because of parse url php function
+         * $atom = $featureCollection->toATOM();
+         */
+        
+    }
+    
+    /**
+     * @depends testFeatureCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 500
+     * @expectedExceptionMessage Context is undefined or not valid
+     * 
+     * Test feature collection without context
+     */
+    public function testExceptionFeatureCollection(){
+        $this->initContext();
+        
+        $featureCollection = new RestoFeatureCollection(null, $this->admin, array());
     }
 
     /**
@@ -115,6 +303,20 @@ class t_unit extends RestoUnitTest {
         $this->initContext();
         $collection = new RestoCollection('Landsat', $this->context, $this->admin, array('autoload' => true));
         $this->assertEquals('c5dc1f32-002d-5ee9-bd4a-c690461eb734', $collection->toFeatureId('LANDSAT5_TM_XS_20110520_N2A_France-MetropoleD0005H0003'));
+    }
+    
+    /**
+     * @depends testFeatureCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 500
+     * @expectedExceptionMessage Order with id=TOTO does not exist
+     * 
+     * Test order exception
+     */
+    public function testExceptionOrder(){
+        $this->initContext();
+        
+        $order = new RestoOrder($this->admin, $this->context, 'TOTO');
     }
 
     /**
@@ -410,6 +612,7 @@ class t_unit extends RestoUnitTest {
         $_rr = $this->admin->removeGroups('toto');
         $this->assertEquals('success', $_aa['status']);
         $this->assertEquals('success', $_rr['status']);
+        
     }
 
     /**
@@ -420,6 +623,7 @@ class t_unit extends RestoUnitTest {
         $this->initContext();
 
         $cart = $this->admin->getCart();
+        $this->assertEquals(false, $cart->add('fake'));
         $cart->add(array(
             0 => array(
                 'id' => 'c5dc1f32-002d-5ee9-bd4a-c690461eb734'
@@ -431,6 +635,8 @@ class t_unit extends RestoUnitTest {
         }
         $this->assertEquals('{"46da82bf743d08f490003533a9100f55eefc5990":{"id":"c5dc1f32-002d-5ee9-bd4a-c690461eb734"}}', $cart->toJSON(false));
         $cart->remove('46da82bf743d08f490003533a9100f55eefc5990');
+        $this->assertEquals(false, $cart->remove(null));    
+        $this->assertEquals(false, $cart->remove('fake'));
         $this->assertEquals(0, count($cart->getItems()));
 
         $cart->add(array(
@@ -438,6 +644,8 @@ class t_unit extends RestoUnitTest {
                 'id' => 'c5dc1f32-002d-5ee9-bd4a-c690461eb734'
             )
         ));
+        $this->assertEquals(false, $cart->update(null, 'toto'));
+        
         $cart->update('46da82bf743d08f490003533a9100f55eefc5990', array(
             'id' => 'c5dc1f32-002d-5ee9-bd4a-c690461eb734',
             'toto' => 'titi'
@@ -446,6 +654,22 @@ class t_unit extends RestoUnitTest {
         $this->assertEquals('titi', $items['46da82bf743d08f490003533a9100f55eefc5990']['toto']);
         $cart->clear();
         $this->assertEquals(0, count($cart->getItems()));
+    }
+    
+    /**
+     * @depends testCreateCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 1001
+     * @expectedExceptionMessage Cannot update item : fake does not exist
+     * 
+     * Test error when trying to load a collection with a wrong model
+     * 
+     */
+    public function testExceptionCart() {
+        $this->initContext();
+        
+        $cart = $this->admin->getCart();
+        $cart->update('fake', 'toto');
     }
 
     /**
@@ -632,6 +856,9 @@ class t_unit extends RestoUnitTest {
         $collection->removeFromStore();
 
         $collection = new RestoCollection('Landsat', $this->context, $this->admin, array('autoload' => true));
+        $collection->removeFromStore();
+        
+        $collection = new RestoCollection('Land', $this->context, $this->admin, array('autoload' => true));
         $collection->removeFromStore();
     }
 

@@ -1,0 +1,15 @@
+{
+    "name": "Example",
+    "model": "RestoModel_example",
+    "status": "public",
+    "licenseId": "Example",
+    "rights":{
+        "download":0,
+        "visualize":1
+    },
+    "propertiesMapping":{
+        "resource" : "/Users/jrom/Devel/image_test.jpg",
+        "resourceMimeType": "image/jpeg",
+        "wms":"http://dotcloud.akka.eu/cgi-bin/mapserv?map=/var/mapfiles/ro.map&file=20070624/SPOT5_HRG1_PAN_L2_20070624_151400.tif&LAYERS=ro&SRS=EPSG:3857&FORMAT=image%2Fpng&TRANSITIONEFFECT=resize&TRANSPARENT=true&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetMap&STYLES=&SRS=EPSG%3A3857&BBOX=-8116791.653107,2127074.880785,-8029679.810101,2204839.415660&WIDTH=256&HEIGHT=256"
+    }
+}

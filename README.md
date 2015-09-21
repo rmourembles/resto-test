@@ -26,7 +26,14 @@ Please set path to resto in conf/configuration.xml
 ## Run test 
     
     cd resto-test
-    phpunit -c conf/configuration.xml --bootstrap conf/autoload.php --coverage-html /absolute/path/to/the/folder/where/you/want/to/store/reports tests/t_unit.php
+    phpunit -c conf/configuration.xml --bootstrap conf/autoload.php tests/t_unit.php
+
+
+    PHPUnit 4.7.7 by Sebastian Bergmann and contributors.
+    .................................
+    Time: 56.73 seconds, Memory: 153.50Mb
+    OK (33 tests, 126 assertions)
+
 
 ## Analysis
 
