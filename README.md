@@ -21,12 +21,12 @@ In order to create a test database, you have to use resto installation script :
 
 ## Configuration
 
-Please set path to resto in conf/configuration.xml
+Please set path to resto in configuration.xml
    
 ## Run test 
     
     cd resto-test
-    phpunit -c conf/configuration.xml --bootstrap conf/autoload.php tests/t_unit.php
+    phpunit -c configuration.xml
 
 
     PHPUnit 4.7.7 by Sebastian Bergmann and contributors.

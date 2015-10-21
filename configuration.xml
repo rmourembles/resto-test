@@ -1,0 +1,29 @@
+<phpunit bootstrap="conf/autoload.php">
+    <php>
+        <env name="resto" value="/home/remi/share/resto/"/>
+    </php>
+    <filter>
+        <whitelist>
+            <!-- lib subfolders to include -->
+            <directory>/home/remi/share/resto/include/resto</directory>
+
+            <exclude>
+                <directory>/home/remi/share/02_TEST</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    <testsuites>
+        <testsuite name="main">
+            <file>tests/t_unit.php</file>
+            <file>tests/Modules/t_unit_Admin.php</file>
+            <file>tests/Utils/t_unit_RestoGeometryUtil.php</file>
+            <file>tests/Utils/t_unit_RestoUtil.php</file>
+            <file>tests/Utils/t_unit_RestoKeywordsUtil.php</file>
+            <file>tests/Utils/t_unit_RestoFacetUtil.php</file>
+            <file>tests/Routes/t_unit_RestoRouteGET.php</file>
+            <file>tests/t_unit_delete.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>
+
+    

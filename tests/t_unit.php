@@ -1,5 +1,5 @@
 <?php
- 
+
 /**
  * Test class for collection actions :
  *  - create collection
@@ -40,7 +40,7 @@ class t_unit extends RestoUnitTest {
         $collection = new RestoCollection($data['name'], $this->context, $this->admin);
         $collection->loadFromJSON($data, true);
     }
-    
+
     /**
      * @depends testCreateCollection
      * @expectedException              Exception
@@ -54,7 +54,7 @@ class t_unit extends RestoUnitTest {
         $collection = new RestoCollection('Toto', $this->context, $this->admin, array('autoload' => true));
         $collection->loadFromJSON($data, false);
     }
-    
+
     /**
      * @depends testCreateCollection
      * @expectedException              Exception
@@ -66,10 +66,10 @@ class t_unit extends RestoUnitTest {
      */
     public function testExceptionCreateCollectionNoContext() {
         $this->initContext();
-        
+
         $collection = new RestoCollection('TATA', null, $this->admin);
     }
-    
+
     /**
      * @depends testCreateCollection
      * @expectedException              Exception
@@ -81,10 +81,10 @@ class t_unit extends RestoUnitTest {
      */
     public function testExceptionCreateCollectionNoName() {
         $this->initContext();
-        
+
         $collection = new RestoCollection(null, $this->context, $this->admin);
     }
-    
+
     /**
      * @depends testCreateCollection
      * @expectedException              Exception
@@ -96,17 +96,17 @@ class t_unit extends RestoUnitTest {
      */
     public function testExceptionCreateCollection() {
         $this->initContext();
-        
+
         $data = file_get_contents(dirname(__FILE__) . "/../data/Example.json");
         $data = json_decode($data, true);
         $collection = new RestoCollection($data['name'], $this->context, $this->admin);
         $collection->loadFromJSON($data, false);
-        
+
         $data = file_get_contents(dirname(__FILE__) . "/../data/Example_error_wrong_model_name.json");
         $data = json_decode($data, true);
         $collection->loadFromJSON($data, false);
     }
-    
+
     /**
      * @depends testCreateCollection
      * @expectedException              Exception
@@ -117,14 +117,14 @@ class t_unit extends RestoUnitTest {
      *  -> missing name attribute
      */
     public function testExceptionCreateCollection_1() {
-        
+
         $this->initContext();
         $data = file_get_contents(dirname(__FILE__) . "/../data/Example_error_without_name.json");
         $data = json_decode($data, true);
         $collection = new RestoCollection('Example', $this->context, $this->admin);
         $collection->loadFromJSON($data, true);
     }
-    
+
     /**
      * @depends testCreateCollection
      * @expectedException              Exception
@@ -135,14 +135,14 @@ class t_unit extends RestoUnitTest {
      *  -> missing model attribute
      */
     public function testExceptionCreateCollection_2() {
-        
+
         $this->initContext();
         $data = file_get_contents(dirname(__FILE__) . "/../data/Example_error_without_model.json");
         $data = json_decode($data, true);
         $collection = new RestoCollection('Example', $this->context, $this->admin);
         $collection->loadFromJSON($data, true);
     }
-    
+
     /**
      * @depends testCreateCollection
      * @expectedException              Exception
@@ -153,14 +153,14 @@ class t_unit extends RestoUnitTest {
      *  -> missing osdescription
      */
     public function testExceptionCreateCollection_3() {
-        
+
         $this->initContext();
         $data = file_get_contents(dirname(__FILE__) . "/../data/Example_error_without_osdescription.json");
         $data = json_decode($data, true);
         $collection = new RestoCollection('Example', $this->context, $this->admin);
         $collection->loadFromJSON($data, true);
     }
-    
+
     /**
      * @depends testCreateCollection
      * @expectedException              Exception
@@ -171,9 +171,9 @@ class t_unit extends RestoUnitTest {
      *  -> missing osdescription
      */
     public function testExceptionCreateCollection_4() {
-        
+
         $this->initContext();
-        $data= 'totto';
+        $data = 'totto';
         $collection = new RestoCollection('Example', $this->context, $this->admin);
         $collection->loadFromJSON($data, true);
     }
@@ -253,21 +253,22 @@ class t_unit extends RestoUnitTest {
          * TODO :   check for toXML function
          */
         $xml = $collections->toXML();
-         /*
+        /*
          * TODO :  chek feature collection
          */
         $featureCollection = $collections->search();
-        
+
         $data = file_get_contents(dirname(__FILE__) . "/../data/Land.json");
         $data = json_decode($data, true);
         $this->assertEquals(true, $collections->create($data));
         $collections->remove('Land');
     }
-    
+
     /*
      * @depends testGetCollections
      */
-    public function testFeatureCollection(){
+
+    public function testFeatureCollection() {
         $this->initContext();
         $featureCollection = new RestoFeatureCollection($this->context, $this->admin, null);
         $collection = new RestoCollection('Example', $this->context, $this->admin, array('autoload' => true));
@@ -279,9 +280,8 @@ class t_unit extends RestoUnitTest {
          * Cannot be tested because of parse url php function
          * $atom = $featureCollection->toATOM();
          */
-        
     }
-    
+
     /**
      * @depends testFeatureCollection
      * @expectedException              Exception
@@ -290,9 +290,9 @@ class t_unit extends RestoUnitTest {
      * 
      * Test feature collection without context
      */
-    public function testExceptionFeatureCollection(){
+    public function testExceptionFeatureCollection() {
         $this->initContext();
-        
+
         $featureCollection = new RestoFeatureCollection(null, $this->admin, array());
     }
 
@@ -304,7 +304,7 @@ class t_unit extends RestoUnitTest {
         $collection = new RestoCollection('Landsat', $this->context, $this->admin, array('autoload' => true));
         $this->assertEquals('c5dc1f32-002d-5ee9-bd4a-c690461eb734', $collection->toFeatureId('LANDSAT5_TM_XS_20110520_N2A_France-MetropoleD0005H0003'));
     }
-    
+
     /**
      * @depends testFeatureCollection
      * @expectedException              Exception
@@ -313,9 +313,9 @@ class t_unit extends RestoUnitTest {
      * 
      * Test order exception
      */
-    public function testExceptionOrder(){
+    public function testExceptionOrder() {
         $this->initContext();
-        
+
         $order = new RestoOrder($this->admin, $this->context, 'TOTO');
     }
 
@@ -486,6 +486,7 @@ class t_unit extends RestoUnitTest {
 
         $this->initContext();
 
+        $this->admin->activate();
         $this->assertEquals(true, $this->admin->isAdmin());
         $this->assertEquals(true, $this->admin->hasRightsTo('create'));
         $this->assertEquals(true, $this->admin->hasRightsTo('download', array('collectionName' => 'Landsat')));
@@ -510,9 +511,41 @@ class t_unit extends RestoUnitTest {
                     'update' => 1,
                     'create' => 1
                         ), 'Landsat'));
-        
+
         $signatures = $this->admin->getSignatures();
         $this->assertEquals(true, empty($signatures));
+
+        $user = new RestoUser(null, $this->context);
+        $this->assertEquals(false, $user->isValidated());
+        $this->assertEquals(false, $user->placeOrder(array('bidon')));
+    }
+
+    /**
+     * @depends testFeatureCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 3005
+     * 
+     * Test error when  sending reset password without email
+     */
+    public function testExceptionRestoUser() {
+        $this->initContext();
+
+        $user = new RestoUser(null, $this->context);
+        $user->sendResetPasswordLink();
+    }
+
+    /**
+     * @depends testFeatureCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 403
+     * 
+     * Test error when trying to connect without valid user
+     */
+    public function testExceptionRestoUser_1() {
+        $this->initContext();
+
+        $user = new RestoUser(null, $this->context);
+        $user->connect();
     }
 
     /**
@@ -594,12 +627,12 @@ class t_unit extends RestoUnitTest {
             'licenseId' => 'Example',
             'signatureQuota' => 'once'
         ));
-        
-        
-        
+
+
+
         $signatures = $user->getSignatures();
         $this->assertEquals(false, empty($signatures));
-        
+
         /*
          * Test when user has signed license
          */
@@ -612,7 +645,6 @@ class t_unit extends RestoUnitTest {
         $_rr = $this->admin->removeGroups('toto');
         $this->assertEquals('success', $_aa['status']);
         $this->assertEquals('success', $_rr['status']);
-        
     }
 
     /**
@@ -635,7 +667,7 @@ class t_unit extends RestoUnitTest {
         }
         $this->assertEquals('{"46da82bf743d08f490003533a9100f55eefc5990":{"id":"c5dc1f32-002d-5ee9-bd4a-c690461eb734"}}', $cart->toJSON(false));
         $cart->remove('46da82bf743d08f490003533a9100f55eefc5990');
-        $this->assertEquals(false, $cart->remove(null));    
+        $this->assertEquals(false, $cart->remove(null));
         $this->assertEquals(false, $cart->remove('fake'));
         $this->assertEquals(0, count($cart->getItems()));
 
@@ -645,7 +677,7 @@ class t_unit extends RestoUnitTest {
             )
         ));
         $this->assertEquals(false, $cart->update(null, 'toto'));
-        
+
         $cart->update('46da82bf743d08f490003533a9100f55eefc5990', array(
             'id' => 'c5dc1f32-002d-5ee9-bd4a-c690461eb734',
             'toto' => 'titi'
@@ -655,7 +687,7 @@ class t_unit extends RestoUnitTest {
         $cart->clear();
         $this->assertEquals(0, count($cart->getItems()));
     }
-    
+
     /**
      * @depends testCreateCollection
      * @expectedException              Exception
@@ -667,7 +699,7 @@ class t_unit extends RestoUnitTest {
      */
     public function testExceptionCart() {
         $this->initContext();
-        
+
         $cart = $this->admin->getCart();
         $cart->update('fake', 'toto');
     }
@@ -708,174 +740,72 @@ class t_unit extends RestoUnitTest {
         $this->assertEquals(0, count($cart->getItems()));
     }
 
+    
+    
     /**
+     * @expectedException              Exception
+     * @expectedExceptionCode 404
      * @depends testGetCollection
      */
-    public function testModuleAdmin() {
+    public function testRestoRoutePOST_api_error() {
         $this->initContext();
 
-        $this->context->method = 'GET';
-        $adminModule = new Admin($this->context, $this->admin);
+        $restoRouteGET = new RestoRoutePOST($this->context, $this->admin);
+        $segments = array('api');
+        $restoRouteGET->route($segments);
+    }
+    
+    /**
+     * @expectedException              Exception
+     * @expectedExceptionCode 404
+     * @depends testGetCollection
+     */
+    public function testRestoRoutePOST_api_licenses_error() {
+        $this->initContext();
 
-        $_r = $adminModule->run(array('users'), array());
-        $this->assertEquals('success', $_r['status']);
-
-        $_r = $adminModule->run(array('history'), array());
-        $this->assertEquals('success', $_r['status']);
-
-        $_r = $adminModule->run(array('users', '1'), array());
-        $this->assertEquals('success', $_r['status']);
-
-        $_r = $adminModule->run(array('users', '1', 'groups'), array());
-        $this->assertEquals('success', $_r['status']);
-
-        $_r = $adminModule->run(array('users', '1', 'rights'), array());
-        $this->assertEquals('success', $_r['status']);
-
-        $_r = $adminModule->run(array('users', '1', 'signatures'), array());
-        $this->assertEquals('success', $_r['status']);
-
-        $_r = $adminModule->run(array('users', '1', 'orders'), array());
-        $this->assertEquals('success', $_r['status']);
-
-        $_r = $adminModule->run(array('users', 'groups'), array());
-        $this->assertEquals('success', $_r['status']);
-        try {
-            $_r = $adminModule->run(array('NQ'), array());
-            //$this->fail('An expected exception has not been raised.');
-        } catch (Exception $expected) {
-            
-        }
-
-        $profile = array(
-            'userid' => 2,
-            'groups' => 'default',
-            'email' => 'test_email',
-            'password' => 'test_password',
-            'username' => 'test_username',
-            'givenname' => 'test_givenname',
-            'lastname' => 'test_lastname',
-            'country' => 'FR',
-            'organization' => 'test_organization',
-            'flags' => null,
-            'topics' => null,
-            'validatedby' => 'admin',
-            'validationdate' => 'now()',
-            'activated' => 1
-        );
-
-        $user = new RestoUser($profile, $this->context);
-        $adminModule = new Admin($this->context, $user);
-        try {
-            $_r = $adminModule->run(array('users'), array());
-            $this->fail('An expected exception has not been raised.');
-        } catch (Exception $expected) {
-            
-        }
-
-        $this->context->method = 'POST';
-        $adminModule = new Admin($this->context, $this->admin);
-        try {
-            $_r = $adminModule->run(array('NQ'), array());
-            $this->fail('An expected exception has not been raised.');
-        } catch (Exception $expected) {
-            
-        }
-        try {
-            $_r = $adminModule->run(array('licenses', 'NQ'), array());
-            $this->fail('An expected exception has not been raised.');
-        } catch (Exception $expected) {
-            
-        }
-        try {
-            $_r = $adminModule->run(array('licenses'), array());
-            $this->fail('An expected exception has not been raised.');
-        } catch (Exception $expected) {
-            
-        }
-        try {
-            $_r = $adminModule->run(array('users'), array());
-            $this->fail('An expected exception has not been raised.');
-        } catch (Exception $expected) {
-            
-        }
-
-        $this->context->method = 'PUT';
-        $adminModule = new Admin($this->context, $this->admin);
-        try {
-            $_r = $adminModule->run(array('NQ'), array());
-            $this->fail('An expected exception has not been raised.');
-        } catch (Exception $expected) {
-            
-        }
-
-        $this->context->method = 'DELETE';
-        $adminModule = new Admin($this->context, $this->admin);
-        try {
-            $_r = $adminModule->run(array('NQ'), array());
-            $this->fail('An expected exception has not been raised.');
-        } catch (Exception $expected) {
-            
-        }
-
-        $this->context->method = 'NQ';
-        $adminModule = new Admin($this->context, $this->admin);
-        try {
-            $_r = $adminModule->run(array('NQ'), array());
-            $this->fail('An expected exception has not been raised.');
-        } catch (Exception $expected) {
-            
-        }
+        $restoRouteGET = new RestoRoutePOST($this->context, $this->admin);
+        $segments = array('api', 'licenses');
+        $restoRouteGET->route($segments);
     }
 
     /**
-     * @depends testInsertResource
-     * 
+     * @expectedException              Exception
+     * @expectedExceptionCode 404
+     * @depends testGetCollection
      */
-    public function testRemoveResource() {
+    public function testRestoRouteGET_default() {
         $this->initContext();
-        $data = file_get_contents(dirname(__FILE__) . "/../data/Landsat.json");
-        $data = json_decode($data, true);
-        $collection = new RestoCollection($data['name'], $this->context, $this->admin, array('autoload' => true));
 
-        $feature = new RestoFeature($this->context, $this->admin, array(
-            'featureIdentifier' => 'c5dc1f32-002d-5ee9-bd4a-c690461eb734',
-            'collection' => $collection
-        ));
-
-        $feature->removeFromStore();
+        $restoRouteGET = new RestoRouteGET($this->context, $this->admin);
+        $segments = array('toto');
+        $restoRouteGET->route($segments);
     }
 
     /**
-     * @depends testRemoveResource
-     * 
+     * @expectedException              Exception
+     * @expectedExceptionCode 404
+     * @depends testGetCollection
      */
-    public function testRemoveCollection() {
+    public function testRestoRouteGET_api_error() {
         $this->initContext();
-        $collection = new RestoCollection('Example', $this->context, $this->admin, array('autoload' => true));
-        $collection->removeFromStore();
 
-        $collection = new RestoCollection('Landsat', $this->context, $this->admin, array('autoload' => true));
-        $collection->removeFromStore();
-        
-        $collection = new RestoCollection('Land', $this->context, $this->admin, array('autoload' => true));
-        $collection->removeFromStore();
+        $restoRouteGET = new RestoRouteGET($this->context, $this->admin);
+        $segments = array('api');
+        $restoRouteGET->route($segments);
     }
 
-    public function testRemoveLicense() {
+    /**
+     * @expectedException              Exception
+     * @expectedExceptionCode 404
+     * @depends testGetCollection
+     */
+    public function testRestoRouteGET_api_collections_error() {
         $this->initContext();
-        $file_license = file_get_contents(dirname(__FILE__) . "/../data/license_Example.json");
-        $data = json_decode($file_license, true);
-        $this->context->dbDriver->remove(RestoDatabaseDriver::LICENSE, array('licenseId' => $data['licenseId']));
-    }
 
-    public function testClearDatabase() {
-
-        $this->initContext();
-        /*
-         * Remove signature : testRegisteredUser
-         */
-        $this->context->dbDriver->fetch($this->context->dbDriver->query('DELETE from usermanagement.signatures WHERE email=\'test_email\''));
+        $restoRouteGET = new RestoRouteGET($this->context, $this->admin);
+        $segments = array('api', 'collections');
+        $restoRouteGET->route($segments);
+        $this->fail('An expected exception has not been raised.');
     }
 
 }
