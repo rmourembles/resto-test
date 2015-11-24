@@ -4,11 +4,10 @@
     </php>
     <filter>
         <whitelist>
-            <!-- SET PATH TO RESTO -->
+            <!-- lib subfolders to include -->
             <directory>/home/remi/share/resto/include/resto</directory>
 
             <exclude>
-                <!-- WHAT YOU WANT TO EXCLUDE -->
                 <directory>/home/remi/share/02_TEST</directory>
             </exclude>
         </whitelist>
