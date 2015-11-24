@@ -318,6 +318,52 @@ class t_unit extends RestoUnitTest {
 
         $order = new RestoOrder($this->admin, $this->context, 'TOTO');
     }
+    
+    /**
+     * @depends testFeatureCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 500
+     * @expectedExceptionMessage Context must be defined
+     * 
+     * Test order exception
+     */
+    public function testExceptionOrder_context() {
+        $this->initContext();
+
+        $order = new RestoOrder($this->admin, null, 'TOTO');
+    }
+    
+    /**
+     * @depends testFeatureCollection
+     * @expectedException              Exception
+     * @expectedExceptionCode 500
+     * @expectedExceptionMessage User must be defined
+     * 
+     * Test order exception
+     */
+    public function testExceptionOrder_user() {
+        $this->initContext();
+
+        $order = new RestoOrder(null, $this->context, 'TOTO');
+    }
+    
+    /**
+     * @depends testFeatureCollection
+     * 
+     * Test order exception
+     */
+    public function testOrder() {
+        $this->initContext();
+        
+        $order = $this->admin->placeOrder(array(array('c5dc1f32-002d-5ee9-bd4a-c690461eb734')));
+        $_order = new RestoOrder($this->admin, $this->context, $order['orderId']);
+        $json_decode =  json_decode($_order->toJSON(true), true);
+        $this->assertEquals('success', $json_decode['status']);
+        $meta4 = $_order->toMETA4();
+        /*
+         * TODO : test $meta4 content
+         */
+    }
 
     /**
      * @depends testGetCollection
