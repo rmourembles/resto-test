@@ -1,5 +1,6 @@
 <phpunit bootstrap="conf/autoload.php">
     <php>
+        <!-- SET RESTO DIRECTORY -->
         <env name="resto" value="/home/remi/share/resto/"/>
     </php>
     <filter>
