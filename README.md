@@ -31,40 +31,12 @@ Please set path to resto in configuration.xml
 
     PHPUnit 4.7.7 by Sebastian Bergmann and contributors.
     .................................
-    Time: 56.73 seconds, Memory: 153.50Mb
-    OK (33 tests, 126 assertions)
+    Time: 1.43 minutes, Memory: 363.00Mb
+    OK (84 tests, 264 assertions)
+
 
 Add --coverage-html /where/you/want/to/store/reports to get coverage reports.
 
 ## Analysis
 
 Open the index.html generated file (located in the folder where you have decided to store reports).
-
-# Use cases
-
-## t_unit.php
-
-### Create/Delete/Manage collection
-
-* Create license
-* Create collection
-* Get collection attributes
-* Add feature to collection
-* Remove feature from collection
-* Delete collection
-* Delete license
-
-### Manage user rights
-
-* Create user
-* Validate user
-* Get user attributes
-* Get user rights
-
-### Search 
-
-Validate following search parameters (with and without results) :
-* update
-* startdate
-* location
-* identifier (uuid and productIdentifier)
