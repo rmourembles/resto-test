@@ -1,15 +1,7 @@
 <?php
 
 /**
- * Test class for collection actions :
- *  - create collection
- *  - delete collection
- *  - add feature to collection
- *  - remove feature from collection
- *  - create license
- *  - delete license
- * 
- * This test class uses admin user stored in database
+ * Gloabl tests
  * 
  */
 class t_unit extends RestoUnitTest {
