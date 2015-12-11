@@ -286,7 +286,7 @@ class t_unit_RestoRouteGET extends RestoUnitTest {
 
     /**
      * @expectedException              Exception
-     * @expectedExceptionCode 500
+     * @expectedExceptionCode 404
      */
     public function testRestoRouteGET_user_orders_error() {
         $this->initContext();

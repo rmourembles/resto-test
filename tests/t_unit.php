@@ -351,7 +351,7 @@ class t_unit extends RestoUnitTest {
         $_order = new RestoOrder($this->admin, $this->context, $order['orderId']);
         $json_decode =  json_decode($_order->toJSON(true), true);
         $this->assertEquals('success', $json_decode['status']);
-        $this->assertEquals(500, $json_decode['order']['errors'][0]['ErrorCode']);
+        $this->assertEquals(404, $json_decode['order']['errors'][0]['ErrorCode']);
         $meta4 = $_order->toMETA4();
         
         $feature = new RestoFeature($this->context, $this->admin, array('featureIdentifier' => 'c5dc1f32-002d-5ee9-bd4a-c690461eb734'));
@@ -397,14 +397,14 @@ class t_unit extends RestoUnitTest {
         $order = $user->placeOrder(array($fake_array));
         $_order = new RestoOrder($user, $this->context, $order['orderId']);
         $json_decode =  json_decode($_order->toJSON(true), true);
-        $this->assertEquals(500, $json_decode['order']['errors'][0]['ErrorCode']);
+        $this->assertEquals(404, $json_decode['order']['errors'][0]['ErrorCode']);
         $this->assertEquals('Item not downloadable', $json_decode['order']['errors'][0]['ErrorMessage']);
         
         $fake_array['properties'] = null;
         $order = $user->placeOrder(array($fake_array));
         $_order = new RestoOrder($user, $this->context, $order['orderId']);
         $json_decode =  json_decode($_order->toJSON(true), true);
-        $this->assertEquals(500, $json_decode['order']['errors'][0]['ErrorCode']);
+        $this->assertEquals(404, $json_decode['order']['errors'][0]['ErrorCode']);
         $this->assertEquals('Invalid item', $json_decode['order']['errors'][0]['ErrorMessage']);
         
         
