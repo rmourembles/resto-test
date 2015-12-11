@@ -7,11 +7,6 @@
         <whitelist>
             <!-- SET RESTO DIRECTORY -->
             <directory>/home/remi/share/resto/include/resto</directory>
-
-            <exclude>
-                <!-- directory you want to exclude -->
-                <directory>/home/remi/share/02_TEST</directory>
-            </exclude>
         </whitelist>
     </filter>
     <testsuites>

@@ -341,7 +341,7 @@ class t_unit extends RestoUnitTest {
      * 
      * Test order exception
      */
-    public function testExceptionOrder_user() {
+    public function testExceptionRestoOrder_user() {
         $this->initContext();
 
         $order = new RestoOrder(null, $this->context, 'TOTO');
@@ -352,14 +352,71 @@ class t_unit extends RestoUnitTest {
      * 
      * Test order exception
      */
-    public function testOrder() {
+    public function testRestoOrder() {
         $this->initContext();
         
         $order = $this->admin->placeOrder(array(array('c5dc1f32-002d-5ee9-bd4a-c690461eb734')));
         $_order = new RestoOrder($this->admin, $this->context, $order['orderId']);
         $json_decode =  json_decode($_order->toJSON(true), true);
         $this->assertEquals('success', $json_decode['status']);
+        $this->assertEquals(500, $json_decode['order']['errors'][0]['ErrorCode']);
         $meta4 = $_order->toMETA4();
+        
+        $feature = new RestoFeature($this->context, $this->admin, array('featureIdentifier' => 'c5dc1f32-002d-5ee9-bd4a-c690461eb734'));
+        $order = $this->admin->placeOrder(array($feature->toArray()));
+        $_order = new RestoOrder($this->admin, $this->context, $order['orderId']);
+        $json_decode =  json_decode($_order->toJSON(true), true);
+        $this->assertEquals(403, $json_decode['order']['errors'][0]['ErrorCode']);
+        
+        $profile = array(
+            'userid' => 3,
+            'groups' => 'default',
+            'email' => 'test_email_order',
+            'password' => 'test_password',
+            'username' => 'test_username',
+            'givenname' => 'test_givenname',
+            'lastname' => 'test_lastname',
+            'country' => 'FR',
+            'organization' => 'FR',
+            'flags' => 'REGISTERED',
+            'topics' => null,
+            'validatedby' => 'admin',
+            'validationdate' => 'now()',
+            'activated' => 1
+        );
+
+        $user = new RestoUser($profile, $this->context);
+        $order = $user->placeOrder(array($feature->toArray()));
+        $_order = new RestoOrder($user, $this->context, $order['orderId']);
+        $json_decode =  json_decode($_order->toJSON(true), true);
+        $this->assertEquals(3002, $json_decode['order']['errors'][0]['ErrorCode']);
+        
+        $license = new RestoLicense($this->context, 'Example', true);
+        $user->signLicense($license);
+        $order = $user->placeOrder(array($feature->toArray()));
+        $_order = new RestoOrder($user, $this->context, $order['orderId']);
+        $json_decode =  json_decode($_order->toJSON(true), true);
+        $this->assertEquals($order['orderId'], $json_decode['order']['orderId']);
+        $this->assertEquals('c5dc1f32-002d-5ee9-bd4a-c690461eb734', $json_decode['order']['items'][0]['id']);
+        $meta4 = $_order->toMETA4();
+        
+        $fake_array = $feature->toArray();
+        $fake_array['properties']['services']['download']['url'] = null;
+        $order = $user->placeOrder(array($fake_array));
+        $_order = new RestoOrder($user, $this->context, $order['orderId']);
+        $json_decode =  json_decode($_order->toJSON(true), true);
+        $this->assertEquals(500, $json_decode['order']['errors'][0]['ErrorCode']);
+        $this->assertEquals('Item not downloadable', $json_decode['order']['errors'][0]['ErrorMessage']);
+        
+        $fake_array['properties'] = null;
+        $order = $user->placeOrder(array($fake_array));
+        $_order = new RestoOrder($user, $this->context, $order['orderId']);
+        $json_decode =  json_decode($_order->toJSON(true), true);
+        $this->assertEquals(500, $json_decode['order']['errors'][0]['ErrorCode']);
+        $this->assertEquals('Invalid item', $json_decode['order']['errors'][0]['ErrorMessage']);
+        
+        
+        
         /*
          * TODO : test $meta4 content
          */
@@ -669,10 +726,7 @@ class t_unit extends RestoUnitTest {
         /*
          * Sign license
          */
-        $user->signLicense(array(
-            'licenseId' => 'Example',
-            'signatureQuota' => 'once'
-        ));
+        $user->signLicense($license);
 
 
 

@@ -192,6 +192,14 @@ class t_unit_delete extends RestoUnitTest {
          * Remove signature : testRegisteredUser
          */
         $this->context->dbDriver->fetch($this->context->dbDriver->query('DELETE from usermanagement.signatures WHERE email=\'test_email\''));
+        /*
+         * Clean orders
+         */
+        $this->context->dbDriver->fetch($this->context->dbDriver->query('DELETE from usermanagement.orders'));
+        /*
+         * Clean signatures
+         */
+        $this->context->dbDriver->fetch($this->context->dbDriver->query('DELETE from usermanagement.signatures'));
     }
 
 }
