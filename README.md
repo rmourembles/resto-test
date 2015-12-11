@@ -32,7 +32,7 @@ Please set path to resto in configuration.xml
     PHPUnit 4.7.7 by Sebastian Bergmann and contributors.
     .................................
     Time: 1.43 minutes, Memory: 363.00Mb
-    OK (84 tests, 264 assertions)
+    OK (84 tests, 272 assertions)
 
 
 Add --coverage-html /where/you/want/to/store/reports to get coverage reports.
